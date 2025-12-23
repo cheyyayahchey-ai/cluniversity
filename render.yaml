@@ -1,0 +1,26 @@
+services:
+  # Python Flask Backend
+  - type: web
+    name: cluniversity-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    rootDir: backend
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    plan: free
+
+  # Blazor Frontend
+  - type: web
+    name: cluniversity-frontend
+    runtime: docker
+    dockerfilePath: ./CLUniversity/Dockerfile
+    dockerContext: ./CLUniversity
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: cluniversity-backend
+          type: web
+          property: hostport
+    plan: free

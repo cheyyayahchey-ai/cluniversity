@@ -1,0 +1,109 @@
+@using CLUniversity.Services
+@using CLUniversity.Models
+
+<div class="card">
+    <div class="card-header">
+        <h3>💰 Salary Management</h3>
+        <button class="btn btn-primary" @onclick="GeneratePayroll">➕ Generate Payroll</button>
+    </div>
+    <div class="card-body">
+        @if (salaries.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Type</th>
+                        <th>Period</th>
+                        <th>Amount (USD)</th>
+                        <th>Amount (KHR)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in salaries)
+                    {
+                        <tr>
+                            <td><strong>@s.EmployeeName</strong></td>
+                            <td><span class="badge @(s.EmployeeType == "lecturer" ? "badge-info" : "badge-warning")">@s.EmployeeType.ToUpper()</span></td>
+                            <td>@s.Month/@s.Year</td>
+                            <td class="amount green">$@s.Amount.ToString("N2")</td>
+                            <td class="amount red">៛@((s.Amount * 4100).ToString("N0"))</td>
+                            <td><span class="badge @(s.Status == "paid" ? "badge-success" : "badge-warning")">@s.Status.ToUpper()</span></td>
+                            <td>
+                                @if (s.Status == "pending")
+                                {
+                                    <button class="btn btn-success btn-sm" @onclick="() => PaySalary(s.Id)">✅ Pay</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="empty-state">No salary records. Generate payroll to create salary records.</p>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public SchoolDataService DataService { get; set; } = null!;
+    [Parameter] public EventCallback OnRefresh { get; set; }
+
+    private List<Salary> salaries = new();
+
+    protected override void OnInitialized()
+    {
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        salaries = DataService.GetSalaries().OrderByDescending(s => s.CreatedAt).ToList();
+    }
+
+    private void GeneratePayroll()
+    {
+        var month = DateTime.Now.Month;
+        var year = DateTime.Now.Year;
+
+        foreach (var lecturer in DataService.GetLecturers().Where(l => l.Status == "active"))
+        {
+            DataService.AddSalary(new Salary
+            {
+                EmployeeId = lecturer.Id,
+                EmployeeType = "lecturer",
+                EmployeeName = lecturer.FullName,
+                Amount = lecturer.Salary,
+                Month = month,
+                Year = year
+            });
+        }
+
+        foreach (var staff in DataService.GetStaff().Where(s => s.Status == "active"))
+        {
+            DataService.AddSalary(new Salary
+            {
+                EmployeeId = staff.Id,
+                EmployeeType = "staff",
+                EmployeeName = staff.FullName,
+                Amount = staff.Salary,
+                Month = month,
+                Year = year
+            });
+        }
+
+        LoadData();
+        OnRefresh.InvokeAsync();
+    }
+
+    private void PaySalary(string id)
+    {
+        DataService.PaySalary(id);
+        LoadData();
+        OnRefresh.InvokeAsync();
+    }
+}

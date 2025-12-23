@@ -1,0 +1,29 @@
+@using Microsoft.AspNetCore.Components
+
+<nav class="sidebar">
+    <div class="sidebar-header">
+        <h2>🎓 CL University</h2>
+        <small>School Management System</small>
+    </div>
+    
+    <div class="nav-section">Main</div>
+    <NavItem Icon="📊" Label="Dashboard" Page="dashboard" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    
+    <div class="nav-section">People Management</div>
+    <NavItem Icon="👨‍🎓" Label="Students" Page="students" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    <NavItem Icon="👨‍🏫" Label="Lecturers" Page="lecturers" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    <NavItem Icon="👔" Label="Staff & Admin" Page="staff" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    
+    <div class="nav-section">Academic</div>
+    <NavItem Icon="🏛️" Label="Departments" Page="departments" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    <NavItem Icon="📚" Label="Courses" Page="courses" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    
+    <div class="nav-section">Finance</div>
+    <NavItem Icon="💳" Label="Payments" Page="payments" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+    <NavItem Icon="💰" Label="Salaries" Page="salaries" CurrentPage="@CurrentPage" OnClick="@OnPageChange" />
+</nav>
+
+@code {
+    [Parameter] public string CurrentPage { get; set; } = "dashboard";
+    [Parameter] public EventCallback<string> OnPageChange { get; set; }
+}

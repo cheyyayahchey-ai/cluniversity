@@ -1,0 +1,25 @@
+@page "/"
+@namespace CLUniversity.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CL University - School Management System</title>
+    <base href="~/" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="css/qr-modal.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <component type="typeof(CLUniversity.App)" render-mode="ServerPrerendered" />
+    <script src="_framework/blazor.server.js"></script>
+    <script>
+        window.printReceipt = function() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

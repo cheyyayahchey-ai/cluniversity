@@ -1,0 +1,359 @@
+/* ========== QR CARD ONLY MODAL ========== */
+
+.qr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fade-in 0.3s ease;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* QR Card Container */
+.qr-card-container {
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-up {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* QR Card Wrapper - Shows QR image with timer below */
+.qr-card-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qr-card-wrapper .qr-image {
+    display: block;
+    width: 340px;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 40px 80px -20px rgba(0, 0, 0, 0.5);
+}
+
+/* Timer Below the QR Card */
+.qr-timer-overlay {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 12px 28px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.qr-timer-overlay::before {
+    content: '⏱️';
+    font-size: 1.2rem;
+}
+
+.qr-timer-overlay .timer-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    letter-spacing: 3px;
+    color: #ffffff;
+}
+
+.qr-timer-overlay.warning {
+    background: rgba(245, 158, 11, 0.85);
+    border-color: rgba(245, 158, 11, 0.5);
+    animation: pulse 1s infinite;
+}
+
+.qr-timer-overlay.warning .timer-value {
+    color: #ffffff;
+}
+
+.qr-timer-overlay.danger {
+    background: rgba(239, 68, 68, 0.9);
+    border-color: rgba(239, 68, 68, 0.5);
+    animation: pulse 0.5s infinite;
+}
+
+.qr-timer-overlay.danger .timer-value {
+    color: #ffffff;
+}
+
+/* Reload Button - Floating */
+.qr-reload-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+}
+
+.qr-reload-btn:hover:not(.loading) {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: scale(1.1) rotate(180deg);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.qr-reload-btn:active:not(.loading) {
+    transform: scale(0.95);
+}
+
+.qr-reload-btn.loading {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    cursor: wait;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.qr-reload-btn.loading .reload-icon {
+    animation: spin 0.8s linear infinite;
+}
+
+/* Bottom Bar with Timer and Reload */
+.qr-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0 8px;
+}
+
+/* Timer */
+.qr-timer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 50px;
+    color: white;
+}
+
+.qr-timer .timer-icon {
+    font-size: 1.2rem;
+}
+
+.qr-timer .timer-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    letter-spacing: 2px;
+}
+
+.qr-timer.warning {
+    background: rgba(245, 158, 11, 0.3);
+    animation: pulse 1s infinite;
+}
+
+.qr-timer.danger {
+    background: rgba(239, 68, 68, 0.4);
+    animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.reload-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.qr-reload-btn:hover:not(.loading) .reload-icon {
+    transform: rotate(180deg);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ========== RECEIPT CARD ========== */
+.receipt-card {
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    width: 380px;
+    max-width: 92%;
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.4);
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.receipt-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    padding: 40px 32px;
+    text-align: center;
+    color: white;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 16px;
+    animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pop-in {
+    0% { transform: scale(0) rotate(-180deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.receipt-success h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.receipt-details {
+    padding: 28px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 0.95rem;
+}
+
+.receipt-row span {
+    color: #64748b;
+}
+
+.receipt-row strong {
+    color: #1e293b;
+}
+
+.receipt-row.total {
+    font-size: 1.25rem;
+    padding: 16px 0;
+}
+
+.receipt-row.total strong {
+    color: #10b981;
+    font-weight: 800;
+}
+
+.receipt-divider {
+    border-top: 2px dashed #e2e8f0;
+    margin: 8px 0;
+}
+
+.receipt-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px 28px 28px;
+}
+
+.btn-receipt {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-receipt.secondary {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.btn-receipt.secondary:hover {
+    background: #e2e8f0;
+}
+
+.btn-receipt.primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
+.btn-receipt.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.5);
+}
+
+/* Print Receipt */
+@media print {
+    /* Hide QR overlay but show receipt */
+    .qr-overlay {
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+    }
+    
+    /* Hide everything except receipt */
+    body * {
+        visibility: hidden;
+    }
+    
+    /* Show receipt card */
+    .receipt-card,
+    .receipt-card *,
+    .receipt-success,
+    .receipt-success *,
+    .receipt-details,
+    .receipt-details * {
+        visibility: visible !important;
+    }
+    
+    .receipt-card {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        animation: none !important;
+    }
+    
+    .receipt-success {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background: #10b981 !important;
+    }
+    
+    .receipt-actions {
+        display: none !important;
+    }
+    
+    .success-icon {
+        animation: none !important;
+    }
+}

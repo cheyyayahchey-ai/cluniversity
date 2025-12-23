@@ -1,0 +1,133 @@
+@using CLUniversity.Services
+@using CLUniversity.Models
+
+<div class="card">
+    <div class="card-header">
+        <h3>📚 Courses</h3>
+        <button class="btn btn-primary" @onclick="() => showModal = true">➕ Add Course</button>
+    </div>
+    <div class="card-body">
+        @if (courses.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Course Name</th>
+                        <th>Credits</th>
+                        <th>Department</th>
+                        <th>Fee/Credit (USD)</th>
+                        <th>Fee/Credit (KHR)</th>
+                        <th>Total Fee</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in courses)
+                    {
+                        var dept = DataService.GetDepartment(c.DepartmentId);
+                        <tr>
+                            <td><span class="badge badge-info">@c.Code</span></td>
+                            <td><strong>@c.Name</strong></td>
+                            <td>@c.Credits</td>
+                            <td>@(dept?.Name ?? "-")</td>
+                            <td>$@c.FeePerCredit.ToString("N2")</td>
+                            <td class="amount red">៛@((c.FeePerCredit * 4100).ToString("N0"))</td>
+                            <td class="amount green"><strong>$@c.TotalFee.ToString("N2")</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="empty-state">No courses created yet.</p>
+        }
+    </div>
+</div>
+
+@if (showModal)
+{
+    <div class="modal-overlay" @onclick="() => showModal = false">
+        <div class="modal" @onclick:stopPropagation="true">
+            <div class="modal-header">
+                <h3>📚 Add New Course</h3>
+                <span class="close-btn" @onclick="() => showModal = false">✕</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Course Code *</label>
+                        <input type="text" class="form-control" @bind="newItem.Code" placeholder="CS101" />
+                    </div>
+                    <div class="form-group">
+                        <label>Credits *</label>
+                        <input type="number" class="form-control" @bind="newItem.Credits" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Course Name *</label>
+                    <input type="text" class="form-control" @bind="newItem.Name" placeholder="Introduction to Programming" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select class="form-control" @bind="newItem.DepartmentId">
+                            <option value="">Select</option>
+                            @foreach (var d in departments)
+                            {
+                                <option value="@d.Id">@d.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fee per Credit (USD) *</label>
+                        <input type="number" class="form-control" @bind="newItem.FeePerCredit" />
+                    </div>
+                </div>
+                <div class="payment-summary">
+                    <p>Total Course Fee</p>
+                    <h3 class="green">$@((newItem.Credits * newItem.FeePerCredit).ToString("N2"))</h3>
+                    <p class="convert">≈ ៛@((newItem.Credits * newItem.FeePerCredit * 4100).ToString("N0"))</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="() => showModal = false">Cancel</button>
+                <button class="btn btn-primary" @onclick="Save">💾 Save</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public SchoolDataService DataService { get; set; } = null!;
+    [Parameter] public EventCallback OnRefresh { get; set; }
+
+    private List<Course> courses = new();
+    private List<Department> departments = new();
+    private bool showModal = false;
+    private Course newItem = new() { Credits = 3, FeePerCredit = 50 };
+
+    protected override void OnInitialized()
+    {
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        courses = DataService.GetCourses();
+        departments = DataService.GetDepartments();
+    }
+
+    private void Save()
+    {
+        if (!string.IsNullOrEmpty(newItem.Code) && !string.IsNullOrEmpty(newItem.Name))
+        {
+            newItem.Code = newItem.Code.ToUpper();
+            DataService.AddCourse(newItem);
+            newItem = new() { Credits = 3, FeePerCredit = 50 };
+            showModal = false;
+            LoadData();
+            OnRefresh.InvokeAsync();
+        }
+    }
+}

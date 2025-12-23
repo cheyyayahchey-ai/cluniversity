@@ -1,0 +1,152 @@
+{
+  "Students": [
+    {
+      "Id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "StudentId": "STU20250001",
+      "FirstName": "hout ",
+      "LastName": "soksitchey",
+      "Email": "chey@gmail.com",
+      "Phone": "0977416126",
+      "Gender": "male",
+      "DepartmentId": "9da791ef-b2a9-4e19-88ce-6db523543c4a",
+      "Status": "active",
+      "CreatedAt": "2025-12-22T16:16:42.040345+07:00",
+      "FullName": "hout  soksitchey"
+    }
+  ],
+  "Lecturers": [],
+  "Staff": [],
+  "Departments": [
+    {
+      "Id": "9da791ef-b2a9-4e19-88ce-6db523543c4a",
+      "Code": "ITE",
+      "Name": "SOFTWARE ENGINEERING",
+      "Description": "good ",
+      "CreatedAt": "2025-12-22T16:16:01.1458923+07:00"
+    }
+  ],
+  "Courses": [],
+  "Payments": [
+    {
+      "Id": "d54906bc-0ffa-4d0c-81ea-e8644eb50530",
+      "BillNumber": "CLU202512221617200001",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 200.0,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "4d507806ab8ef0e28ca55c6897bd7de7",
+      "Status": "pending",
+      "CreatedAt": "2025-12-22T16:17:20.8514627+07:00",
+      "PaidAt": null
+    },
+    {
+      "Id": "cdb4e6fd-7be7-4211-ab05-80e1c7cccf97",
+      "BillNumber": "CLU202512221617260001",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 200.0,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "ce5e4a6e93d2589d71c92f1ce7b3778d",
+      "Status": "pending",
+      "CreatedAt": "2025-12-22T16:17:26.8743312+07:00",
+      "PaidAt": null
+    },
+    {
+      "Id": "caee03d9-9f3e-4c22-b78e-e4b434638350",
+      "BillNumber": "CLU202512221618130003",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 200.0,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "957c847c85aa999f8cb50f923c3ab45c",
+      "Status": "pending",
+      "CreatedAt": "2025-12-22T16:18:13.6233604+07:00",
+      "PaidAt": null
+    },
+    {
+      "Id": "9c8eae28-880a-44ce-94a2-8e02f9602b8d",
+      "BillNumber": "CLU202512221622140006",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 200.0,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "093890f2f91f22d0ff795023bb187d31",
+      "Status": "pending",
+      "CreatedAt": "2025-12-22T16:22:14.90498+07:00",
+      "PaidAt": null
+    },
+    {
+      "Id": "9c6e9b31-6e58-4fed-a38a-35c90d3b74b6",
+      "BillNumber": "CLU202512221628560007",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 200.0,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "659023578e93a3f43e34d0d60e570384",
+      "Status": "pending",
+      "CreatedAt": "2025-12-22T16:28:56.4634115+07:00",
+      "PaidAt": null
+    },
+    {
+      "Id": "bc7fee7f-a290-4990-9c58-c3980a9a18cc",
+      "BillNumber": "CLU202512221634130008",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 200.0,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "846e9cd4bfca599f54ebdde4bc2fbe24",
+      "Status": "pending",
+      "CreatedAt": "2025-12-22T16:34:13.8755778+07:00",
+      "PaidAt": null
+    },
+    {
+      "Id": "fafa5e5c-3c49-423b-b64b-48202d2fef63",
+      "BillNumber": "CLU202512221650450015",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 0.02,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "a6565e78b1c1147b63eb9ee608cc1015",
+      "Status": "paid",
+      "CreatedAt": "2025-12-22T16:51:06.4844235+07:00",
+      "PaidAt": "2025-12-22T16:51:06.4844262+07:00"
+    },
+    {
+      "Id": "152cf55c-a1d0-48e1-9944-f6aacc9c5045",
+      "BillNumber": "CLU202512221655050016",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 0.02,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "e26d88268238d55f06afa0938e05aab3",
+      "Status": "paid",
+      "CreatedAt": "2025-12-22T16:55:17.4873689+07:00",
+      "PaidAt": "2025-12-22T16:55:17.4873715+07:00"
+    },
+    {
+      "Id": "ae7be01c-cf73-4eb8-baf3-b5be529b4454",
+      "BillNumber": "CLU202512221657530018",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 0.02,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "920e1972784a9b4b845b7ba207f83ed0",
+      "Status": "paid",
+      "CreatedAt": "2025-12-22T16:59:26.0157406+07:00",
+      "PaidAt": "2025-12-22T16:59:26.0157436+07:00"
+    },
+    {
+      "Id": "71496206-68dd-409a-82f3-951e438ce4e8",
+      "BillNumber": "CLU202512230146320022",
+      "StudentId": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "Amount": 0.02,
+      "Currency": "USD",
+      "PaymentType": "tuition",
+      "Md5": "ae36f59a333306b6ad706ca2de405586",
+      "Status": "paid",
+      "CreatedAt": "2025-12-23T01:46:44.378506+07:00",
+      "PaidAt": "2025-12-23T01:46:44.3785086+07:00"
+    }
+  ],
+  "Salaries": []
+}

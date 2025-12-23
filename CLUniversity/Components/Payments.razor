@@ -1,0 +1,380 @@
+@using CLUniversity.Services
+@using CLUniversity.Models
+@inject IJSRuntime JS
+
+<div class="card">
+    <div class="card-header">
+        <h3>💳 Payment Records</h3>
+        <button class="btn btn-primary" @onclick="OpenPaymentModal">➕ New Payment</button>
+    </div>
+    <div class="card-body">
+        @if (payments.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Bill Number</th>
+                        <th>Student</th>
+                        <th>Department</th>
+                        <th>Type</th>
+                        <th>Amount (USD)</th>
+                        <th>Amount (KHR)</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in payments)
+                    {
+                        var student = DataService.GetStudent(p.StudentId);
+                        var dept = student != null ? DataService.GetDepartment(student.DepartmentId) : null;
+                        <tr>
+                            <td><code>@p.BillNumber</code></td>
+                            <td><strong>@(student?.FullName ?? "-")</strong></td>
+                            <td><span class="badge badge-info">@(dept?.Code ?? "-")</span></td>
+                            <td><span class="badge badge-warning">@p.PaymentType.ToUpper()</span></td>
+                            <td class="amount green">$@p.Amount.ToString("N2")</td>
+                            <td class="amount red">៛@((p.Amount * 4100).ToString("N0"))</td>
+                            <td><span class="badge badge-success">PAID</span></td>
+                            <td>@p.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="empty-state">No payment records yet.</p>
+        }
+    </div>
+</div>
+
+@* Payment Form Modal *@
+@if (showFormModal)
+{
+    <div class="modal-overlay" @onclick="CloseModal">
+        <div class="modal" @onclick:stopPropagation="true">
+            <div class="modal-header">
+                <h3>💳 New Payment</h3>
+                <span class="close-btn" @onclick="CloseModal">✕</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Select Department *</label>
+                    <select class="form-control" @bind="selectedDepartmentId">
+                        <option value="">-- All Departments --</option>
+                        @foreach (var d in departments)
+                        {
+                            <option value="@d.Id">@d.Code - @d.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Student *</label>
+                    <select class="form-control" @bind="selectedStudentId">
+                        <option value="">-- Select Student --</option>
+                        @foreach (var s in FilteredStudents)
+                        {
+                            <option value="@s.Id">@s.StudentId - @s.FullName</option>
+                        }
+                    </select>
+                    @if (!string.IsNullOrEmpty(selectedDepartmentId) && !FilteredStudents.Any())
+                    {
+                        <small class="text-muted">No students in this department</small>
+                    }
+                </div>
+                <div class="form-group">
+                    <label>Payment Type *</label>
+                    <select class="form-control" @bind="paymentType">
+                        <option value="tuition">Tuition Fee</option>
+                        <option value="registration">Registration Fee</option>
+                        <option value="library">Library Fee</option>
+                        <option value="lab">Laboratory Fee</option>
+                        <option value="graduation">Graduation Fee</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Enter Amount (USD) *</label>
+                    <input type="number" class="form-control" @bind="amountUSD" placeholder="Enter amount in USD" />
+                </div>
+                <div class="form-group">
+                    <label>Pay in Currency *</label>
+                    <select class="form-control" @bind="currency">
+                        <option value="USD">USD (US Dollar)</option>
+                        <option value="KHR">KHR (Cambodian Riel) - Auto Convert</option>
+                    </select>
+                </div>
+                @if (amountUSD > 0)
+                {
+                    <div class="payment-preview @(currency == "KHR" ? "khr-preview" : "")">
+                        <p>Amount to Pay:</p>
+                        @if (currency == "KHR")
+                        {
+                            <h2 class="red">៛@GetKHRAmount().ToString("N0")</h2>
+                            <small class="conversion-note">Converted from $@amountUSD.ToString("N2") × @USD_TO_KHR.ToString("N0")</small>
+                        }
+                        else
+                        {
+                            <h2 class="green">$@amountUSD.ToString("N2")</h2>
+                            <small class="conversion-note">≈ ៛@GetKHRAmount().ToString("N0") KHR</small>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="CloseModal">Cancel</button>
+                <button class="btn btn-primary" @onclick="GenerateQR" disabled="@(amountUSD <= 0 || string.IsNullOrEmpty(selectedStudentId) || isLoading)">
+                    @(isLoading ? "Generating..." : "Generate QR")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@* QR Card Only Modal - Timer below the card *@
+@if (showQRModal)
+{
+    <div class="qr-overlay" @onclick="CloseQRModal">
+        <div class="qr-card-wrapper" @onclick:stopPropagation="true">
+            @* Reload Button floating on top-right *@
+            <button class="qr-reload-btn @(isReloading ? "loading" : "")" @onclick="ReloadQR" disabled="@isReloading">
+                <span class="reload-icon">↻</span>
+            </button>
+            
+            @* QR Image *@
+            <img src="data:image/png;base64,@qrImage" alt="Scan to Pay" class="qr-image" />
+            
+            @* Timer Below the QR Card *@
+            <div class="qr-timer-overlay @GetTimerClass()">
+                <span class="timer-value">@FormatTime(timeRemaining)</span>
+            </div>
+        </div>
+    </div>
+}
+
+@* Receipt Modal *@
+@if (showReceipt)
+{
+    <div class="qr-overlay">
+        <div class="receipt-card">
+            <div class="receipt-success">
+                <div class="success-icon">✓</div>
+                <h2>Payment Successful!</h2>
+            </div>
+            <div class="receipt-details">
+                <div class="receipt-row">
+                    <span>Receipt No.</span>
+                    <strong>@billNumber</strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Student</span>
+                    <strong>@(DataService.GetStudent(selectedStudentId)?.FullName)</strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Department</span>
+                    <strong>@GetSelectedDepartmentName()</strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Payment Type</span>
+                    <strong>@paymentType.ToUpper()</strong>
+                </div>
+                <div class="receipt-row">
+                    <span>Date & Time</span>
+                    <strong>@DateTime.Now.ToString("MMM dd, yyyy HH:mm")</strong>
+                </div>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row total">
+                    <span>Total Paid</span>
+                    <strong>@(currency == "KHR" ? $"៛{GetKHRAmount():N0}" : $"${amountUSD:N2}")</strong>
+                </div>
+                <div class="receipt-row">
+                    <span></span>
+                    <small style="color:#64748b">@(currency == "KHR" ? $"(${amountUSD:N2})" : $"(៛{GetKHRAmount():N0})")</small>
+                </div>
+            </div>
+            <div class="receipt-actions">
+                <button class="btn-receipt secondary" @onclick="CloseAll">Close</button>
+                <button class="btn-receipt primary" @onclick="PrintReceipt">🖨️ Print</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public SchoolDataService DataService { get; set; } = null!;
+    [Parameter] public PaymentService PaymentService { get; set; } = null!;
+    [Parameter] public EventCallback OnRefresh { get; set; }
+
+    private const decimal USD_TO_KHR = 4100m;
+    
+    private List<Payment> payments = new();
+    private List<Student> students = new();
+    private List<Department> departments = new();
+    
+    private bool showFormModal, showQRModal, showReceipt, isLoading, isReloading;
+    private string selectedStudentId = "", selectedDepartmentId = "", paymentType = "tuition", currency = "USD";
+    private string qrImage = "", billNumber = "", md5Hash = "";
+    private decimal amountUSD; // Always store in USD
+    private int timeRemaining = 240;
+    
+    private System.Threading.Timer? countdownTimer, checkTimer;
+
+    // Filter students by selected department
+    private List<Student> FilteredStudents => string.IsNullOrEmpty(selectedDepartmentId) 
+        ? students 
+        : students.Where(s => s.DepartmentId == selectedDepartmentId).ToList();
+
+    protected override void OnInitialized() => LoadData();
+
+    private void LoadData()
+    {
+        payments = DataService.GetPayments()
+            .Where(p => p.Status == "paid")
+            .OrderByDescending(p => p.CreatedAt)
+            .ToList();
+        students = DataService.GetStudents();
+        departments = DataService.GetDepartments();
+    }
+
+    private decimal GetKHRAmount() => Math.Round(amountUSD * USD_TO_KHR);
+
+    private void OpenPaymentModal()
+    {
+        showFormModal = true;
+        selectedStudentId = "";
+        selectedDepartmentId = "";
+        amountUSD = 0;
+        currency = "USD";
+        paymentType = "tuition";
+    }
+
+    private void CloseModal() => showFormModal = false;
+    
+    private void CloseQRModal()
+    {
+        showQRModal = false;
+        StopTimers();
+        LoadData();
+        OnRefresh.InvokeAsync();
+    }
+
+    private void CloseAll()
+    {
+        showFormModal = showQRModal = showReceipt = false;
+        StopTimers();
+        LoadData();
+        OnRefresh.InvokeAsync();
+    }
+
+    private async Task GenerateQR()
+    {
+        isLoading = true;
+        StateHasChanged();
+
+        // Convert amount based on currency selection
+        decimal qrAmount = currency == "KHR" ? GetKHRAmount() : amountUSD;
+        
+        var result = await PaymentService.GenerateQRCode(qrAmount, currency, paymentType, selectedStudentId);
+        
+        if (result.Success)
+        {
+            qrImage = result.QrImage;
+            md5Hash = result.Md5;
+            billNumber = result.BillNumber;
+            
+            showFormModal = false;
+            showQRModal = true;
+            timeRemaining = 240;
+            StartTimers();
+        }
+        
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task ReloadQR()
+    {
+        isReloading = true;
+        StateHasChanged();
+        StopTimers();
+        
+        await Task.Delay(400);
+        
+        decimal qrAmount = currency == "KHR" ? GetKHRAmount() : amountUSD;
+        var result = await PaymentService.GenerateQRCode(qrAmount, currency, paymentType, selectedStudentId);
+        
+        if (result.Success)
+        {
+            qrImage = result.QrImage;
+            md5Hash = result.Md5;
+            billNumber = result.BillNumber;
+            timeRemaining = 240;
+            StartTimers();
+        }
+        
+        isReloading = false;
+        StateHasChanged();
+    }
+
+    private void StartTimers()
+    {
+        countdownTimer = new System.Threading.Timer(async _ =>
+        {
+            timeRemaining--;
+            if (timeRemaining <= 0)
+            {
+                StopTimers();
+                await InvokeAsync(() => { showQRModal = false; StateHasChanged(); });
+            }
+            await InvokeAsync(StateHasChanged);
+        }, null, 1000, 1000);
+
+        checkTimer = new System.Threading.Timer(async _ =>
+        {
+            var isPaid = await PaymentService.CheckPaymentStatus(md5Hash);
+            if (isPaid)
+            {
+                StopTimers();
+                
+                // Save payment record (always store USD amount)
+                DataService.AddPayment(new Payment
+                {
+                    BillNumber = billNumber,
+                    StudentId = selectedStudentId,
+                    Amount = amountUSD,
+                    Currency = currency,
+                    PaymentType = paymentType,
+                    Md5 = md5Hash,
+                    Status = "paid",
+                    PaidAt = DateTime.Now
+                });
+                
+                await InvokeAsync(() => { showQRModal = false; showReceipt = true; StateHasChanged(); });
+                await Task.Delay(1500);
+                await InvokeAsync(PrintReceipt);
+            }
+        }, null, 3000, 3000);
+    }
+
+    private void StopTimers()
+    {
+        countdownTimer?.Dispose();
+        checkTimer?.Dispose();
+    }
+
+    private string FormatTime(int s) => $"{s / 60:D2}:{s % 60:D2}";
+    
+    private string GetTimerClass() => timeRemaining <= 30 ? "danger" : timeRemaining <= 60 ? "warning" : "";
+
+    private string GetSelectedDepartmentName()
+    {
+        var student = DataService.GetStudent(selectedStudentId);
+        if (student == null) return "-";
+        var dept = DataService.GetDepartment(student.DepartmentId);
+        return dept?.Name ?? "-";
+    }
+
+    private async Task PrintReceipt() => await JS.InvokeVoidAsync("printReceipt");
+
+    public void Dispose() => StopTimers();
+}

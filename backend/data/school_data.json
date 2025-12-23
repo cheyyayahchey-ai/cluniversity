@@ -1,0 +1,279 @@
+{
+  "students": [
+    {
+      "id": "66a20d9b-f478-47c4-b6c4-bfd02014918f",
+      "student_id": "STU20250001",
+      "first_name": "hout",
+      "last_name": "soksithchey",
+      "email": "houtsoksithchey@gmail.com",
+      "phone": "0977416126",
+      "date_of_birth": "2007-02-02",
+      "gender": "male",
+      "address": "pp",
+      "department_id": null,
+      "status": "active",
+      "created_at": "2025-12-22T15:49:29.235295"
+    }
+  ],
+  "lecturers": [],
+  "staff": [],
+  "courses": [],
+  "departments": [],
+  "payments": [
+    {
+      "id": "51128a2b-d2f2-4505-b907-246867b7a65c",
+      "bill_number": "CLU202512221528530001",
+      "student_id": null,
+      "amount": 200.0,
+      "currency": "KHR",
+      "payment_type": "registration",
+      "md5": "70325e993c7469e03d43de66791c235e",
+      "status": "pending",
+      "created_at": "2025-12-22T15:28:53.447312"
+    },
+    {
+      "id": "dc5ca05d-f9cd-4614-b90a-c92d9f18870a",
+      "bill_number": "CLU202512221529090002",
+      "student_id": null,
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "29da902b46ed074a78e289f57b146bdc",
+      "status": "pending",
+      "created_at": "2025-12-22T15:29:09.523496"
+    },
+    {
+      "id": "a83733d8-f82c-489d-bee8-de5445562c67",
+      "bill_number": "CLU202512221549390003",
+      "student_id": "66a20d9b-f478-47c4-b6c4-bfd02014918f",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "5ccf18bfa5e7faf8281bc88e8d92c542",
+      "status": "pending",
+      "created_at": "2025-12-22T15:49:39.932994"
+    },
+    {
+      "id": "d9e1ce3a-478a-4344-9a2c-b23bcc274cf1",
+      "bill_number": "CLU202512221553460004",
+      "student_id": "66a20d9b-f478-47c4-b6c4-bfd02014918f",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "14c98f522ed72d2891fccc98e0606654",
+      "status": "pending",
+      "created_at": "2025-12-22T15:53:46.866334"
+    },
+    {
+      "id": "21c5da32-f971-4a5f-bd8d-a0242198e74b",
+      "bill_number": "CLU202512221554150005",
+      "student_id": "66a20d9b-f478-47c4-b6c4-bfd02014918f",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "cd5c83ee47017a498ed9a14ad42bdba3",
+      "status": "pending",
+      "created_at": "2025-12-22T15:54:15.760724"
+    },
+    {
+      "id": "bc540a56-df8c-408d-94d9-c4022024eabb",
+      "bill_number": "CLU202512221622140006",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "093890f2f91f22d0ff795023bb187d31",
+      "status": "pending",
+      "created_at": "2025-12-22T16:22:14.882677"
+    },
+    {
+      "id": "8b72fe8a-87e3-41c3-ab47-157cf35bc99d",
+      "bill_number": "CLU202512221628560007",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "659023578e93a3f43e34d0d60e570384",
+      "status": "pending",
+      "created_at": "2025-12-22T16:28:56.443642"
+    },
+    {
+      "id": "542fc365-f086-44ae-8fac-c1fcc22eba8f",
+      "bill_number": "CLU202512221634130008",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "846e9cd4bfca599f54ebdde4bc2fbe24",
+      "status": "pending",
+      "created_at": "2025-12-22T16:34:13.857184"
+    },
+    {
+      "id": "314bd01a-339e-44eb-8af5-e66776cce154",
+      "bill_number": "CLU202512221638470009",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 200.0,
+      "currency": "KHR",
+      "payment_type": "tuition",
+      "md5": "6d888ff3e0571563e8efa4dca058fe75",
+      "status": "pending",
+      "created_at": "2025-12-22T16:38:47.621775"
+    },
+    {
+      "id": "d9912b11-df24-4bba-89c9-28117df4da6d",
+      "bill_number": "CLU202512221647440010",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 820000.0,
+      "currency": "KHR",
+      "payment_type": "tuition",
+      "md5": "7bd0252e0302eba8d0cbd12ddb9ef315",
+      "status": "pending",
+      "created_at": "2025-12-22T16:47:44.616090"
+    },
+    {
+      "id": "7e4fae38-ea80-4a40-9652-10e0f6ebae75",
+      "bill_number": "CLU202512221647530011",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 820000.0,
+      "currency": "KHR",
+      "payment_type": "tuition",
+      "md5": "ed7f9e3a483083218b5a7b485849fd75",
+      "status": "pending",
+      "created_at": "2025-12-22T16:47:53.891011"
+    },
+    {
+      "id": "c14207e0-b37b-4362-b6fb-48249dd0e4f4",
+      "bill_number": "CLU202512221650020012",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 820000.0,
+      "currency": "KHR",
+      "payment_type": "tuition",
+      "md5": "c7325ef7879d43cdfc6bb7f55d351ab3",
+      "status": "pending",
+      "created_at": "2025-12-22T16:50:02.610986"
+    },
+    {
+      "id": "853058c8-55de-4345-9781-005745da656b",
+      "bill_number": "CLU202512221650120013",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 820000.0,
+      "currency": "KHR",
+      "payment_type": "tuition",
+      "md5": "f46c7242ebfb96985565d191c781389e",
+      "status": "pending",
+      "created_at": "2025-12-22T16:50:12.475501"
+    },
+    {
+      "id": "e2bd594f-d526-4d79-ab07-92ffd8ebb027",
+      "bill_number": "CLU202512221650290014",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 200.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "9c8293808ff11603fb3a870dbb64086a",
+      "status": "pending",
+      "created_at": "2025-12-22T16:50:29.210827"
+    },
+    {
+      "id": "4c25e95f-6332-48ca-84fb-893e9708ed7c",
+      "bill_number": "CLU202512221650450015",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 0.02,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "a6565e78b1c1147b63eb9ee608cc1015",
+      "status": "paid",
+      "created_at": "2025-12-22T16:50:45.929338",
+      "paid_at": "2025-12-22T16:51:06.480375"
+    },
+    {
+      "id": "5982386f-aa40-47c5-9ea1-d91b0a3cc7de",
+      "bill_number": "CLU202512221655050016",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 0.02,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "e26d88268238d55f06afa0938e05aab3",
+      "status": "paid",
+      "created_at": "2025-12-22T16:55:05.921330",
+      "paid_at": "2025-12-22T16:55:17.483594"
+    },
+    {
+      "id": "5384b193-f0ee-43e6-b6e2-416d0057d2b7",
+      "bill_number": "CLU202512221657220017",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 0.02,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "d926b1c55548c87c2605fc2243ee0d22",
+      "status": "pending",
+      "created_at": "2025-12-22T16:57:22.919480"
+    },
+    {
+      "id": "1f6caa73-62e8-4001-80d5-61e6603122bf",
+      "bill_number": "CLU202512221657530018",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 0.02,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "920e1972784a9b4b845b7ba207f83ed0",
+      "status": "paid",
+      "created_at": "2025-12-22T16:57:53.120104",
+      "paid_at": "2025-12-22T16:59:26.011852"
+    },
+    {
+      "id": "673dfd74-212a-4de6-85a8-18e84856945b",
+      "bill_number": "CLU202512222012040019",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 20.0,
+      "currency": "USD",
+      "payment_type": "registration",
+      "md5": "bf3044da140ad4e01ce6964303d18407",
+      "status": "pending",
+      "created_at": "2025-12-22T20:12:04.421068"
+    },
+    {
+      "id": "c2d3117b-e250-4072-bdc2-5a9843ebf8cf",
+      "bill_number": "CLU202512230145560020",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 82.0,
+      "currency": "KHR",
+      "payment_type": "tuition",
+      "md5": "4fca7a68dd080d91b28d3c0a5550e5c0",
+      "status": "pending",
+      "created_at": "2025-12-23T01:45:56.905089"
+    },
+    {
+      "id": "53e6852f-1a4e-4039-ad18-5151180d3ad6",
+      "bill_number": "CLU202512230146100021",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 2.0,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "6c5e757bb71520a7b86d173d0444deab",
+      "status": "pending",
+      "created_at": "2025-12-23T01:46:10.736771"
+    },
+    {
+      "id": "586484d5-7531-4a63-8d9f-58a63154adc0",
+      "bill_number": "CLU202512230146320022",
+      "student_id": "e0f5c963-c56b-4669-8942-25445041edf6",
+      "amount": 0.02,
+      "currency": "USD",
+      "payment_type": "tuition",
+      "md5": "ae36f59a333306b6ad706ca2de405586",
+      "status": "paid",
+      "created_at": "2025-12-23T01:46:32.766123",
+      "paid_at": "2025-12-23T01:46:44.374583"
+    }
+  ],
+  "salaries": [],
+  "enrollments": [],
+  "fees": {
+    "tuition_per_credit": 50,
+    "registration_fee": 100,
+    "library_fee": 25,
+    "lab_fee": 50,
+    "graduation_fee": 200
+  }
+}

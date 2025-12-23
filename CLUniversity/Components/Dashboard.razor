@@ -1,0 +1,69 @@
+@using CLUniversity.Services
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue">👨‍🎓</div>
+        <h3>@Stats.TotalStudents</h3>
+        <p>Total Students</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green">👨‍🏫</div>
+        <h3>@Stats.TotalLecturers</h3>
+        <p>Lecturers</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon orange">👔</div>
+        <h3>@Stats.TotalStaff</h3>
+        <p>Staff Members</p>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon pink">📚</div>
+        <h3>@Stats.TotalCourses</h3>
+        <p>Courses</p>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-header"><h3>💰 Revenue Overview</h3></div>
+        <div class="card-body">
+            <div class="stat-row">
+                <div>
+                    <p class="label">Total Payments Received</p>
+                    <h2 class="amount green">$@Stats.TotalPayments.ToString("N2")</h2>
+                    <p class="convert">≈ ៛@((Stats.TotalPayments * 4100).ToString("N0"))</p>
+                </div>
+            </div>
+            <div class="stat-row">
+                <div>
+                    <p class="label">Pending Payments</p>
+                    <h2 class="amount orange">$@Stats.PendingPayments.ToString("N2")</h2>
+                    <p class="convert">≈ ៛@((Stats.PendingPayments * 4100).ToString("N0"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header"><h3>💼 Salary Overview</h3></div>
+        <div class="card-body">
+            <div class="stat-row">
+                <div>
+                    <p class="label">Total Salaries Paid</p>
+                    <h2 class="amount blue">$@Stats.TotalSalariesPaid.ToString("N2")</h2>
+                    <p class="convert">≈ ៛@((Stats.TotalSalariesPaid * 4100).ToString("N0"))</p>
+                </div>
+            </div>
+            <div class="stat-row">
+                <div>
+                    <p class="label">Pending Salaries</p>
+                    <h2 class="amount red">$@Stats.PendingSalaries.ToString("N2")</h2>
+                    <p class="convert">≈ ៛@((Stats.PendingSalaries * 4100).ToString("N0"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public DashboardStats Stats { get; set; } = new();
+}

@@ -1,0 +1,113 @@
+@inherits LayoutComponentBase
+@using CLUniversity.Services
+@using CLUniversity.Models
+@using CLUniversity.Components
+@inject SchoolDataService DataService
+@inject PaymentService PaymentService
+
+<div class="app-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>🎓 CL University</h2>
+            <small>School Management System</small>
+        </div>
+        
+        <div class="nav-section">Main</div>
+        <div class="nav-item @(currentPage == "dashboard" ? "active" : "")" @onclick='() => currentPage = "dashboard"'>
+            <span>📊</span><span>Dashboard</span>
+        </div>
+        
+        <div class="nav-section">People Management</div>
+        <div class="nav-item @(currentPage == "students" ? "active" : "")" @onclick='() => currentPage = "students"'>
+            <span>👨‍🎓</span><span>Students</span>
+        </div>
+        <div class="nav-item @(currentPage == "lecturers" ? "active" : "")" @onclick='() => currentPage = "lecturers"'>
+            <span>👨‍🏫</span><span>Lecturers</span>
+        </div>
+        <div class="nav-item @(currentPage == "staff" ? "active" : "")" @onclick='() => currentPage = "staff"'>
+            <span>👔</span><span>Staff & Admin</span>
+        </div>
+        
+        <div class="nav-section">Academic</div>
+        <div class="nav-item @(currentPage == "departments" ? "active" : "")" @onclick='() => currentPage = "departments"'>
+            <span>🏛️</span><span>Departments</span>
+        </div>
+        <div class="nav-item @(currentPage == "courses" ? "active" : "")" @onclick='() => currentPage = "courses"'>
+            <span>📚</span><span>Courses</span>
+        </div>
+        
+        <div class="nav-section">Finance</div>
+        <div class="nav-item @(currentPage == "payments" ? "active" : "")" @onclick='() => currentPage = "payments"'>
+            <span>💳</span><span>Payments</span>
+        </div>
+        <div class="nav-item @(currentPage == "salaries" ? "active" : "")" @onclick='() => currentPage = "salaries"'>
+            <span>💰</span><span>Salaries</span>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="topbar">
+            <div>
+                <h1>@GetPageTitle()</h1>
+                <p class="subtitle">CL University Management System</p>
+            </div>
+        </div>
+
+        @switch (currentPage)
+        {
+            case "dashboard":
+                <Dashboard Stats="@stats" />
+                break;
+            case "students":
+                <Students DataService="@DataService" OnRefresh="@LoadData" />
+                break;
+            case "lecturers":
+                <Lecturers DataService="@DataService" OnRefresh="@LoadData" />
+                break;
+            case "staff":
+                <StaffPage DataService="@DataService" OnRefresh="@LoadData" />
+                break;
+            case "departments":
+                <Departments DataService="@DataService" OnRefresh="@LoadData" />
+                break;
+            case "courses":
+                <Courses DataService="@DataService" OnRefresh="@LoadData" />
+                break;
+            case "payments":
+                <Payments DataService="@DataService" PaymentService="@PaymentService" OnRefresh="@LoadData" />
+                break;
+            case "salaries":
+                <Salaries DataService="@DataService" OnRefresh="@LoadData" />
+                break;
+        }
+    </main>
+</div>
+
+@code {
+    private string currentPage = "dashboard";
+    private DashboardStats stats = new();
+
+    protected override void OnInitialized()
+    {
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        stats = DataService.GetStats();
+        StateHasChanged();
+    }
+
+    private string GetPageTitle() => currentPage switch
+    {
+        "dashboard" => "Dashboard",
+        "students" => "Students",
+        "lecturers" => "Lecturers",
+        "staff" => "Staff & Administration",
+        "departments" => "Departments",
+        "courses" => "Courses",
+        "payments" => "Payments",
+        "salaries" => "Salaries",
+        _ => "Dashboard"
+    };
+}

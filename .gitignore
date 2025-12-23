@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+__pycache__/
+*.pyc
+.env
+*.db
+node_modules/

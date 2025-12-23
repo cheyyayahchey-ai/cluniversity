@@ -1,0 +1,70 @@
+@page "/"
+@using CLUniversity.Services
+@using CLUniversity.Models
+@using CLUniversity.Components
+@inject SchoolDataService DataService
+@inject PaymentService PaymentService
+
+<div class="topbar">
+    <div>
+        <h1>@GetPageTitle()</h1>
+        <p class="subtitle">CL University Management System</p>
+    </div>
+</div>
+
+@switch (currentPage)
+{
+    case "dashboard":
+        <Dashboard Stats="@stats" />
+        break;
+    case "students":
+        <Students DataService="@DataService" OnRefresh="@LoadData" />
+        break;
+    case "lecturers":
+        <Lecturers DataService="@DataService" OnRefresh="@LoadData" />
+        break;
+    case "staff":
+        <StaffPage DataService="@DataService" OnRefresh="@LoadData" />
+        break;
+    case "departments":
+        <Departments DataService="@DataService" OnRefresh="@LoadData" />
+        break;
+    case "courses":
+        <Courses DataService="@DataService" OnRefresh="@LoadData" />
+        break;
+    case "payments":
+        <Payments DataService="@DataService" PaymentService="@PaymentService" OnRefresh="@LoadData" />
+        break;
+    case "salaries":
+        <Salaries DataService="@DataService" OnRefresh="@LoadData" />
+        break;
+}
+
+@code {
+    private string currentPage = "dashboard";
+    private DashboardStats stats = new();
+
+    protected override void OnInitialized()
+    {
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        stats = DataService.GetStats();
+        StateHasChanged();
+    }
+
+    private string GetPageTitle() => currentPage switch
+    {
+        "dashboard" => "Dashboard",
+        "students" => "Students",
+        "lecturers" => "Lecturers",
+        "staff" => "Staff & Administration",
+        "departments" => "Departments",
+        "courses" => "Courses",
+        "payments" => "Payments",
+        "salaries" => "Salaries",
+        _ => "Dashboard"
+    };
+}

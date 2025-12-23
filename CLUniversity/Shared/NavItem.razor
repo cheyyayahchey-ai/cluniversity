@@ -1,0 +1,12 @@
+@code {
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Page { get; set; } = "";
+    [Parameter] public string CurrentPage { get; set; } = "";
+    [Parameter] public EventCallback<string> OnClick { get; set; }
+}
+
+<div class="nav-item @(CurrentPage == Page ? "active" : "")" @onclick="() => OnClick.InvokeAsync(Page)">
+    <span>@Icon</span>
+    <span>@Label</span>
+</div>
