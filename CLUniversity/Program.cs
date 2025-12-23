@@ -7,7 +7,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<SchoolDataService>();
 builder.Services.AddHttpClient<PaymentService>(client =>
 {
-    var backendUrl = Environment.GetEnvironmentVariable("BACKEND_URL") ?? "http://localhost:5001/";
+    var backendUrl = Environment.GetEnvironmentVariable("BACKEND_URL") ?? "https://backend-dun-iota-65.vercel.app/";
     client.BaseAddress = new Uri(backendUrl);
     client.Timeout = TimeSpan.FromSeconds(30);
 });
